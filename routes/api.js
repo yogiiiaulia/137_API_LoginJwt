@@ -1,22 +1,28 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 
-const komikController = require("../controller/komikController");
-const userController = require("../controller/userController");
-const authMiddleware = require("../middleware/authMiddleware");
+const komikController = require('../controller/komikController');
+const userController = require('../controller/userController');
+const genreController = require('../controller/genreController');
+const authMiddleware = require('../middleware/authMiddleware');
 
-// 🔍 Tambahkan baris ini:
-console.log("Isi userController:", userController);
-router.post("/register", userController.register);
-router.post("/login", userController.login);
+router.post('/register', userController.register);
+router.post('/login', userController.login);
 
-// Public
-router.get("/komik", komikController.getAllKomik);
-router.get("/komik/:id", komikController.getKomikById);
+//public
+router.get('/komik', komikController.getAllKomik);
+router.get('/komik/:id', komikController.getKomikById);
 
-// Protected
-router.post("/komik", authMiddleware, komikController.createKomik);
-router.put("/komik/:id", authMiddleware, komikController.updateKomik);
-router.delete("/komik/:id", authMiddleware, komikController.deleteKomik);
+//protected
+router.post('/komik', authMiddleware, komikController.createKomik);
+router.put('/komik/:id', authMiddleware, komikController.updateKomik);
+router.delete('/komik/:id', authMiddleware, komikController.deleteKomik);
+
+//genre - semua method wajib login
+router.get('/genre', authMiddleware, genreController.getAllGenre);
+router.get('/genre/:id', authMiddleware, genreController.getGenreById);
+router.post('/genre', authMiddleware, genreController.createGenre);
+router.put('/genre/:id', authMiddleware, genreController.updateGenre);
+router.delete('/genre/:id', authMiddleware, genreController.deleteGenre);
 
 module.exports = router;
